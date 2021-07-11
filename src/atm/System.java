@@ -148,5 +148,35 @@ public class System {
         d.st.executeUpdate(sql);
         d.Close();
     }
+     public void View() {
+        DefaultTableModel t = new DefaultTableModel();
+        t.addColumn("ID");
+        t.addColumn("Type");
+        t.addColumn("Time");
+        t.addColumn("Balance_befor");
+        t.addColumn("Balance_after");
+        Transaction_hestory.jTable1.setModel(t);
+        try {
+            DataBase d = new DataBase();
+            String sql = "select * from Transactions_history where id ="+user_id;
+            ResultSet result = d.st.executeQuery(sql);
 
+            while (result.next()) {
+                t.addRow(new String[]{
+                    String.valueOf(result.getInt("id")),
+                    result.getString("Transaction_type"),
+                    result.getString("date"),
+                    String.valueOf(result.getFloat("balance_befor")),
+                    String.valueOf(result.getFloat("balance_after")),
+                });
+            }
+
+            //Close
+            d.Close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+}
 }
